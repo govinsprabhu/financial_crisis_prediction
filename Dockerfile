@@ -8,6 +8,12 @@ COPY requirements.txt .
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy the model files and dataset first
+COPY african_crises.csv .
+COPY logistic_regression_model.pkl .
+COPY scaler.pkl .
+COPY label_encoders.pkl .
+
 # Copy the rest of the application
 COPY . .
 
@@ -19,4 +25,4 @@ ENV FLASK_ENV=production
 ENV PYTHONPATH=.
 
 # Run the application with gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app", "--preload"]

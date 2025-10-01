@@ -156,10 +156,10 @@ def about():
     """About page"""
     return render_template('about.html')
 
+# Load model when the module is imported
+load_model_and_data()
+print("Model loaded successfully!")
+print(f"Available features: {feature_names}")
+
 if __name__ == '__main__':
-    # Load model on startup
-    load_model_and_data()
-    print("Model loaded successfully!")
-    print(f"Available features: {feature_names}")
-    
     app.run(debug=True, host='0.0.0.0', port=5001) 
