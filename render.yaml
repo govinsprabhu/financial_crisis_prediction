@@ -1,15 +1,10 @@
 services:
   - type: web
     name: financial-crisis-prediction
-    env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+    env: docker
+    dockerfilePath: Dockerfile
     autoDeploy: true
-    envVars:
-      - key: FLASK_ENV
-        value: production
-      - key: PYTHON_VERSION
-        value: 3.11.8
-      - key: PYTHONPATH
-        value: .
     plan: free
+    envVars:
+      - key: PORT
+        value: "5000"
