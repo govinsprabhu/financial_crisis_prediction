@@ -2,10 +2,12 @@ services:
   - type: web
     name: financial-crisis-prediction
     env: python
-    buildCommand: pip install --upgrade pip setuptools wheel -r requirements.txt
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
     startCommand: "python app.py"
     autoDeploy: true
     envVars:
       - key: FLASK_ENV
         value: production
+      - key: PYTHON_VERSION
+        value: 3.11.8
     plan: free
