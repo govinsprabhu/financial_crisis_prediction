@@ -2,12 +2,17 @@ services:
   - type: web
     name: financial-crisis-prediction
     env: python
-    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
-    startCommand: "python app.py"
+    buildCommand: |
+      python -m pip install --upgrade pip
+      pip install setuptools==69.0.3 wheel==0.42.0
+      pip install -r requirements.txt
+    startCommand: "gunicorn app:app"
     autoDeploy: true
     envVars:
       - key: FLASK_ENV
         value: production
       - key: PYTHON_VERSION
         value: 3.11.8
+      - key: PYTHONPATH
+        value: .
     plan: free
