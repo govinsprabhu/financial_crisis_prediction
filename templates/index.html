@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Crisis Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-chart-line"></i>
+                <span>Financial Crisis Predictor</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link active">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#predict" class="nav-link">Predict</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#analytics" class="nav-link">Analytics</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/about" class="nav-link">About</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Predict Financial Crises with AI</h1>
+                <p>Advanced machine learning models to forecast banking crises in African countries using historical economic data.</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <i class="fas fa-globe-africa"></i>
+                        <span>13 Countries</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>{{ min_year }} - {{ max_year }}</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-brain"></i>
+                        <span>10 ML Models</span>
+                    </div>
+                </div>
+                <a href="#predict" class="cta-button">Start Prediction</a>
+            </div>
+            <div class="hero-image">
+                <i class="fas fa-chart-area"></i>
+            </div>
+        </section>
+
+        <!-- Prediction Section -->
+        <section id="predict" class="prediction-section">
+            <div class="container">
+                <h2>Make a Prediction</h2>
+                <p>Enter economic indicators to predict the likelihood of a banking crisis.</p>
+                
+                <div class="prediction-container">
+                    <div class="form-container">
+                        <form id="predictionForm">
+                            <div class="form-group">
+                                <label for="country">Country:</label>
+                                <select id="country" name="country" required>
+                                    <option value="">Select a country</option>
+                                    {% for country in countries %}
+                                    <option value="{{ country }}">{{ country }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="year">Year:</label>
+                                <input type="number" id="year" name="year" min="{{ min_year }}" max="{{ max_year }}" value="2020" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inflation">Annual Inflation Rate (%):</label>
+                                <input type="number" id="inflation" name="inflation_annual_cpi" step="0.01" value="5.0" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exchange_rate">Exchange Rate (USD):</label>
+                                <input type="number" id="exchange_rate" name="exch_usd" step="0.001" value="1.0" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="systemic_crisis">Systemic Crisis:</label>
+                                <select id="systemic_crisis" name="systemic_crisis" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="currency_crises">Currency Crisis:</label>
+                                <select id="currency_crises" name="currency_crises" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inflation_crises">Inflation Crisis:</label>
+                                <select id="inflation_crises" name="inflation_crises" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="predict-btn">
+                                <i class="fas fa-magic"></i>
+                                Predict Crisis
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="result-container" id="resultContainer" style="display: none;">
+                        <div class="result-header">
+                            <h3>Prediction Result</h3>
+                            <div class="result-icon" id="resultIcon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                        </div>
+                        <div class="result-content">
+                            <div class="prediction-status" id="predictionStatus">
+                                <span class="status-text">Analyzing...</span>
+                            </div>
+                            <div class="confidence-meter">
+                                <div class="confidence-label">Confidence Level</div>
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" id="confidenceFill"></div>
+                                </div>
+                                <div class="confidence-percentage" id="confidencePercentage">0%</div>
+                            </div>
+                            <div class="result-details" id="resultDetails">
+                                <!-- Additional details will be populated here -->
+                            </div>
+                        </div>
+                        <button class="new-prediction-btn" onclick="resetForm()">
+                            <i class="fas fa-redo"></i>
+                            New Prediction
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Financial Crisis Prediction. Built with Flask and Machine Learning.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html> 
